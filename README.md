@@ -1,6 +1,6 @@
 # Web-Based Inventory Management System for CK Computers
 
-![Capture](https://github.com/user-attachments/assets/012dd2f8-6b34-4551-943a-f81aef9366d6)
+![Home page](https://github.com/user-attachments/assets/41c462b2-84b4-4a4d-a6a9-9c469527c62a)
 
 ## 📋 Project Overview
 
