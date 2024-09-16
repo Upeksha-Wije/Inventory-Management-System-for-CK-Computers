@@ -1,0 +1,164 @@
+<?php 
+
+// Include the file containing database connection code segement
+require_once '../common/config.php';
+
+// Include the file containing login function code segement
+require_once '../common/functions.php';
+   
+//check if the user is logged in
+if (!isLoggedIn()) {
+    $_SESSION['msg'] = "You must log in first";
+    header('location: ../login.php');
+}
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Deleted Purchase Order Management</title>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+             
+          
+        <script>
+                            function myFunction() {
+                              var input, filter, table, tr, td, i;
+                              input = document.getElementById("myInput");
+                              filter = input.value.toUpperCase();
+                              table = document.getElementById("myTable");
+                              tr = table.getElementsByTagName("tr");
+                              for (i = 0; i < tr.length; i++) {
+                                td = tr[i].getElementsByTagName("td")[3];
+                                if (td) {
+                                  if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                                    tr[i].style.display = "";
+                                  } else {
+                                    tr[i].style.display = "none";
+                                  }
+                                }       
+                              }
+                            }
+                            </script>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();   
+        });
+    </script>
+    <?php include "../common/header.php"; ?>
+</head>
+<body style="background-image: url(../images/Background/Copy-conL4.jpg); background-size: cover; background-repeat:no-repeat;">
+        <!-- Navbar -->
+        <?php require_once '../common/navbar.php'; ?>
+        
+        
+
+      <br/>
+      <br/>
+      <br/>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-2"></div>
+                <div class="col-9 mx-auto">
+                    <div class="page-header clearfix">
+                        <h2 class="pull-left">Deleted Purchase Order Management</h2>         
+                    </div>
+
+                    <a href="index.php" class="btn btn-primary pull-right">&nbsp;<i class="fa fa-arrow-circle-left"></i> Purchase Order Management</a>                   
+                    
+
+                    <br/>
+                    <br/>
+
+                    <script>
+                    $(document).ready(function() {
+                        $('#myTable').DataTable( {
+                            "order": [[ 0, "desc" ]]
+                        } );
+                    } );
+                    </script>   
+
+                    <?php           
+                    // Attempt select query execution
+                    $sql = "SELECT * FROM purchases WHERE dlt=1 ORDER BY `id` DESC";
+                    if($result = mysqli_query($link, $sql)){
+                        if(mysqli_num_rows($result) > 0){
+                            echo "<div class='bg-white p-3'><table class='table table-bordered table-striped table-hover table-responsive-sm' id='myTable'>";
+                                echo "<thead>";
+                                    echo "<tr>";
+                                        echo "<th>Purchase Order ID</th>";
+                                        echo "<th>Date</th>";
+                                        echo "<th>Supplier ID</th>";
+                                        echo "<th>Supplier Name</th>";
+                                        echo "<th>status</th>";      
+                                        echo "<th>Action</th>";             
+                                    echo "</tr>";
+                                echo "</thead>";
+                                echo "<tbody>";
+                                while($row = mysqli_fetch_array($result)){
+                                    echo "<tr>";
+                                        echo "<td>" . $row['id'] . "</td>";
+                                        echo "<td>" . $row['date'] . "</td>";
+                                        echo "<td>" . $row['supplier'] . "</td>";
+
+                                        echo "<td>";   
+                                            $z=$row['supplier']; 
+                                            $count="SELECT * FROM suppliers WHERE id=$z"; // SQL to get records 
+                                            foreach ($link->query($count) as $row1) {
+                                                echo $row1['firstname']." ".$row1['lastname'];  
+                                            }       
+                                        echo "</td>";
+
+                                        //display status
+                                        $status = $row['status'];
+                                        if($status==1){
+                                            echo "<td>" . "<div class='badge badge-success'>Active</div>" . "</td>";/* display Active badge */
+                                        }else{
+                                            echo "<td>" . "<div class='badge badge-danger'>Inactive</div>" . "</td>";/* display Inactive badge */
+                                        }
+
+
+                                        echo "<td class='text-right'>";   
+                                            if($status==1){
+                                                echo "<a href='print.php?id=". $row['id'] ."' title='Print Purchase Order' data-toggle='tooltip' target='_blank'><i class='fa fa-print'></i>&nbsp;</a>";
+                                                echo "<a href='dview.php?id=". $row['id'] ."' title='View Purchase Order' data-toggle='tooltip'>&nbsp;<i class='fa fa-eye'></i>&nbsp;</a>";    
+                                                echo "<a href='recover.php?id=". $row['id'] ."' title='Recover' data-toggle='tooltip'>&nbsp;<i class='fa fa-recycle'></i>                                                </a>";
+                                            }else{
+                                                echo "<a href='dview.php?id=". $row['id'] ."' title='View Purchase Order' data-toggle='tooltip'>&nbsp;<i class='fa fa-eye'></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>";    
+                                                echo "<a href='recover.php?id=". $row['id'] ."' class='btn btn-success' title='Recover' data-toggle='tooltip'><i class='fa fa-recycle'>&nbsp; Recover</a>";
+                                            }      
+                                        echo "</td>";
+
+
+                                    echo "</tr>";
+                                }
+                                echo "</tbody>";                            
+                            echo "</table>";
+
+
+                            // Free result set
+                            mysqli_free_result($result);
+                        } else{
+                            echo "<p class='lead'><em>No records were found.</em></p>";
+                        }
+                    } else{
+                        echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+                    }
+ 
+                    // Close connection
+                    mysqli_close($link);
+                    ?>
+                    
+                </div>
+            </div>        
+        </div>
+        <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.js"></script>
+ 
+</body>
+</html>
