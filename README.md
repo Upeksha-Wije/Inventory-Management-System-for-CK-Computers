@@ -26,7 +26,7 @@ This project is a comprehensive **Web-Based Inventory Management System** develo
 
 1. **Clone the Repository:**
    ```bash
-   git clone https://github.com/your-username/inventory-management-system.git
+   git clone https://github.com/Upeksha-Wije/Inventory-Management-System-for-CK-Computers
    ```
    
 2. **Set Up the Environment:**
@@ -48,7 +48,7 @@ This project is a comprehensive **Web-Based Inventory Management System** develo
    
 5. **Run the Project:**
    - Start **Apache** and **MySQL** services from the XAMPP control panel.
-   - Open your browser and navigate to `http://localhost/inventory-management-system`.
+   - Open your browser and navigate to `http://localhost/Inventory-Management-System-for-CK-Computers`.
 
 ## 📂 Project Structure
 
