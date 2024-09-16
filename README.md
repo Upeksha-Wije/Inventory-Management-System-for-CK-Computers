@@ -81,6 +81,7 @@ This project is a comprehensive **Web-Based Inventory Management System** develo
 ## 📝 License
 
 ![License](https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-lightgrey)
+- For more details: (https://github.com/Upeksha-Wije/Inventory-Management-System-for-CK-Computers/blob/219711f9b4d15a2de3ae43691b7e8bd7e5470523/LICENSE)
 
 ## ✉️ Contact
 
